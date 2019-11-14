@@ -7,7 +7,7 @@ resource "kops_cluster" "donger" {
     content = jsonencode(yamldecode(templatefile(
         "templates/cluster-spec.yaml",
         {
-            cluster_name = "k8.donger.example.xom"
+            cluster_name = "k8.donger.example.com"
             ssh_key_name = "donger-kops"
             vpc = {
               "cidr_block" = "10.40.0.0/20"
