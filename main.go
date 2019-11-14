@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/colinhoglund/terraform-provider-kops/kops"
+	"github.com/compareasiagroup/terraform-provider-kops/kops"
 	"github.com/hashicorp/terraform/plugin"
 )
 

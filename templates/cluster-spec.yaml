@@ -1,0 +1,186 @@
+apiVersion: kops.k8s.io/v1alpha2
+kind: Cluster
+metadata:
+  creationTimestamp: "2019-11-07T21:35:55Z"
+  name: ${cluster_name}
+spec:
+  additionalPolicies:
+    node: |
+      [
+        {
+          "Effect": "Allow",
+          "Action": [
+            "autoscaling:DescribeAutoScalingGroups",
+            "autoscaling:DescribeAutoScalingInstances",
+            "autoscaling:DescribeLaunchConfigurations",
+            "autoscaling:DescribeTags",
+            "autoscaling:SetDesiredCapacity",
+            "autoscaling:TerminateInstanceInAutoScalingGroup"
+          ],
+          "Resource": ["*"]
+        },
+        {
+          "Effect": "Allow",
+          "Action": [
+            "ec2:CreateNetworkInterface",
+            "ec2:DeleteNetworkInterface",
+            "ec2:DescribeAvailabilityZones",
+            "ec2:DescribeNetworkInterfaceAttribute",
+            "ec2:DescribeNetworkInterfaces",
+            "ec2:DescribeSecurityGroups",
+            "ec2:DescribeSubnets",
+            "ec2:DescribeVpcAttribute",
+            "ec2:DescribeVpcs",
+            "ec2:DescribeRegions",
+            "ec2:ModifyNetworkInterfaceAttribute",
+            "elasticfilesystem:*",
+            "kms:DescribeKey",
+            "kms:ListAliases"
+          ],
+          "Resource": ["*"]
+        },
+        {
+          "Effect": "Allow",
+          "Action": [
+            "elasticloadbalancing:AddTags",
+            "elasticloadbalancing:CreateListener",
+            "elasticloadbalancing:CreateTargetGroup",
+            "elasticloadbalancing:DeleteListener",
+            "elasticloadbalancing:DeleteTargetGroup",
+            "elasticloadbalancing:DescribeListeners",
+            "elasticloadbalancing:DescribeLoadBalancerPolicies",
+            "elasticloadbalancing:DescribeTargetGroups",
+            "elasticloadbalancing:DescribeTargetHealth",
+            "elasticloadbalancing:ModifyListener",
+            "elasticloadbalancing:ModifyTargetGroup",
+            "elasticloadbalancing:RegisterTargets",
+            "elasticloadbalancing:SetLoadBalancerPoliciesOfListener"
+          ],
+          "Resource": ["*"]
+        },
+        {
+          "Effect": "Allow",
+          "Action": "route53:GetChange",
+          "Resource": "arn:aws:route53:::change/*"
+        },
+        {
+          "Effect": "Allow",
+          "Action": ["route53:ChangeResourceRecordSets"],
+          "Resource": ["arn:aws:route53:::hostedzone/*"]
+        },
+        {
+          "Effect": "Allow",
+          "Action": [
+            "route53:ListHostedZones",
+            "route53:ListResourceRecordSets",
+            "route53:ListHostedZonesByName"
+          ],
+          "Resource": ["*"]
+        }
+      ]
+  api:
+    loadBalancer:
+      type: Internal
+  authorization:
+    rbac: {}
+  channel: stable
+  cloudProvider: aws
+  configBase: s3://k8-test-priv-cag-systems-kstate/${cluster_name}
+  etcdClusters:
+  - etcdMembers:
+    - instanceGroup: master-a
+      name: a
+    - instanceGroup: master-b
+      name: b
+    - instanceGroup: master-c
+      name: c
+    name: main
+    cpuRequest: 200m
+    memoryRequest: 100Mi
+  - etcdMembers:
+    - instanceGroup: master-a
+      name: a
+    - instanceGroup: master-b
+      name: b
+    - instanceGroup: master-c
+      name: c
+    name: events
+    cpuRequest: 100m
+    memoryRequest: 100Mi
+  hooks:
+  - before:
+    - kubelet.service
+    manifest: |
+      [Service]
+      Type=oneshot
+      RemainAfterExit=no
+      ExecStart=/bin/sh -c "sed -i -- 's/pool/#pool/g' /etc/ntp.conf ; echo 'server 169.254.169.123 prefer iburst' >> /etc/ntp.conf"
+      ExecStartPost=/bin/systemctl restart ntp.service
+    name: change_ntp_server.service
+    roles:
+    - Node
+    - Master
+  iam:
+    allowContainerRegistry: true
+    legacy: false
+  kubeAPIServer:
+    admissionControl:
+    - NamespaceLifecycle
+    - LimitRanger
+    - ServiceAccount
+    - PersistentVolumeLabel
+    - DefaultStorageClass
+    - DefaultTolerationSeconds
+    - MutatingAdmissionWebhook
+    - ValidatingAdmissionWebhook
+    - ResourceQuota
+    - NodeRestriction
+    - Priority
+  kubeDNS:
+    provider: CoreDNS
+  kubelet:
+    anonymousAuth: false
+    authenticationTokenWebhook: true
+    authorizationMode: Webhook
+  kubernetesApiAccess:
+  - ${vpc.cidr_block}
+  %{~ for r in allowed_cidr_blocks ~}
+  - ${r}
+  %{~ endfor ~}
+  kubernetesVersion: 1.15.5
+  masterInternalName: api.internal.${cluster_name}
+  masterPublicName: api.${cluster_name}
+  networkCIDR: ${vpc.cidr_block}
+  networkID: ${vpc.vpc_id}
+  networking:
+    calico:
+      crossSubnet: true
+  nonMasqueradeCIDR: 100.64.0.0/10
+  sshAccess:
+  - ${vpc.cidr_block}
+  %{~ for r in allowed_cidr_blocks ~}
+  - ${r}
+  %{~ endfor ~}
+  sshKeyName: ${ssh_key_name}
+  subnets:
+  - id: ${utility_subnets["ap-southeast-1a"].subnet.id}
+    name: u_a
+    type: Utility
+    zone: ap-southeast-1a
+  - id: ${utility_subnets["ap-southeast-1b"].subnet.id}
+    name: u_b
+    type: Utility
+    zone: ap-southeast-1b
+  - id: ${node_subnets["ap-southeast-1a"].subnet.id}
+    name: n_a
+    type: Private
+    zone: ap-southeast-1a
+  - id: ${node_subnets["ap-southeast-1b"].subnet.id}
+    name: n_b
+    type: Private
+    zone: ap-southeast-1b
+  topology:
+    dns:
+      type: Private
+    masters: private
+    nodes: private

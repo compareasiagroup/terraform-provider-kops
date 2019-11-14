@@ -1,0 +1,37 @@
+apiVersion: kops.k8s.io/v1alpha2
+kind: InstanceGroup
+metadata:
+  creationTimestamp: "2019-09-17T13:07:25Z"
+  generation: 1
+  labels:
+    kops.k8s.io/cluster: ${cluster_name}
+  name: nodes-spot
+spec:
+  cloudLabels:
+    k8s.io/cluster-autoscaler/enabled: "true"
+    k8s.io/cluster-autoscaler/${cluster_name}: "true"
+    kubernetes.io/cluster/${cluster_name}: owned
+    role: compute
+  image: kope.io/k8s-1.15-debian-stretch-amd64-hvm-ebs-2019-09-26
+  machineType: m5.xlarge
+  maxSize: ${max_size}
+  minSize: ${min_size}
+  mixedInstancesPolicy:
+    instances:
+    - m4.xlarge
+    - t3.xlarge
+    - m5.xlarge
+    - t2.xlarge
+    - c5.2xlarge
+    onDemandAboveBase: 0
+    onDemandBase: 1
+    spotInstancePools: 8
+  nodeLabels:
+    kops.k8s.io/instancegroup: nodes-spot
+  role: Node
+  rootVolumeSize: 128
+  subnets:
+  - n_a
+  - n_b
+  suspendProcesses:
+  - AZRebalance

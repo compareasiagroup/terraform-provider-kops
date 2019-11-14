@@ -1,61 +1,55 @@
-module github.com/colinhoglund/terraform-provider-kops
+module github.com/compareasiagroup/terraform-provider-kops
+
+go 1.12
+
+// kops 1.15.0-beta.1 - 1a662bf87cab4319f87187d5f3ee7e78577061a1
+
+// https://github.com/kubernetes/kops/blob/1.15.0-beta.1/go.mod
+
+replace k8s.io/kubernetes => k8s.io/kubernetes v1.15.3
+
+replace k8s.io/api => k8s.io/api v0.0.0-20190819141258-3544db3b9e44
+
+replace k8s.io/apimachinery => k8s.io/apimachinery v0.0.0-20190817020851-f2f3a405f61d
+
+replace k8s.io/client-go => k8s.io/client-go v0.0.0-20190819141724-e14f31a72a77
+
+replace k8s.io/cloud-provider => k8s.io/cloud-provider v0.0.0-20190819145148-d91c85d212d5
+
+replace k8s.io/apiserver => k8s.io/apiserver v0.0.0-20190819142446-92cc630367d0
+
+replace k8s.io/apiextensions-apiserver => k8s.io/apiextensions-apiserver v0.0.0-20190819143637-0dbe462fe92d
+
+replace k8s.io/kubelet => k8s.io/kubelet v0.0.0-20190819144524-827174bad5e8
+
+replace k8s.io/cli-runtime => k8s.io/cli-runtime v0.0.0-20190819144027-541433d7ce35
+
+replace k8s.io/kube-controller-manager => k8s.io/kube-controller-manager v0.0.0-20190819144832-f53437941eef
+
+replace k8s.io/code-generator => k8s.io/code-generator v0.0.0-20190612205613-18da4a14b22b
+
+replace k8s.io/kube-scheduler => k8s.io/kube-scheduler v0.0.0-20190819144657-d1a724e0828e
+
+replace k8s.io/kube-proxy => k8s.io/kube-proxy v0.0.0-20190819144346-2e47de1df0f0
+
+replace k8s.io/cri-api => k8s.io/cri-api v0.0.0-20190817025403-3ae76f584e79
+
+replace k8s.io/csi-translation-lib => k8s.io/csi-translation-lib v0.0.0-20190819145328-4831a4ced492
+
+replace k8s.io/legacy-cloud-providers => k8s.io/legacy-cloud-providers v0.0.0-20190819145509-592c9a46fd00
+
+replace k8s.io/component-base => k8s.io/component-base v0.0.0-20190819141909-f0f7c184477d
+
+replace k8s.io/cluster-bootstrap => k8s.io/cluster-bootstrap v0.0.0-20190819145008-029dd04813af
+
+replace k8s.io/metrics => k8s.io/metrics v0.0.0-20190819143841-305e1cef1ab1
+
+replace k8s.io/sample-apiserver => k8s.io/sample-apiserver v0.0.0-20190819143045-c84c31c165c4
+
+replace k8s.io/kube-aggregator => k8s.io/kube-aggregator v0.0.0-20190819142756-13daafd3604f
 
 require (
-	cloud.google.com/go v0.28.0 // indirect
-	github.com/MakeNowJust/heredoc v0.0.0-20171113091838-e9091a26100e // indirect
-	github.com/apparentlymart/go-cidr v1.0.0 // indirect
-	github.com/blang/semver v3.5.1+incompatible // indirect
-	github.com/denverdino/aliyungo v0.0.0-20180920222655-13fa8aaef667 // indirect
-	github.com/dgrijalva/jwt-go v3.2.0+incompatible // indirect
-	github.com/docker/distribution v2.6.0-rc.1.0.20180920194744-16128bbac47f+incompatible // indirect
-	github.com/docker/docker v1.13.1 // indirect
-	github.com/docker/go-connections v0.4.0 // indirect
-	github.com/docker/go-units v0.3.3 // indirect
-	github.com/evanphx/json-patch v4.1.0+incompatible // indirect
-	github.com/go-ini/ini v1.38.2 // indirect
-	github.com/gogo/protobuf v1.1.1 // indirect
-	github.com/google/gofuzz v0.0.0-20170612174753-24818f796faf // indirect
-	github.com/googleapis/gnostic v0.2.0 // indirect
-	github.com/gophercloud/gophercloud v0.0.0-20180210024343-6da026c32e2d // indirect; git commit "6da026c32e2d622cc242d32984259c77237aefe1"
-	github.com/hashicorp/go-cleanhttp v0.5.0 // indirect
-	github.com/hashicorp/go-getter v0.0.0-20180809191950-4bda8fa99001 // indirect
-	github.com/hashicorp/go-safetemp v1.0.0 // indirect
-	github.com/hashicorp/go-version v1.0.0 // indirect
-	github.com/hashicorp/hcl v1.0.0 // indirect
-	github.com/hashicorp/logutils v1.0.0 // indirect
-	github.com/hashicorp/terraform v0.12.0-alpha2
-	github.com/hashicorp/yamux v0.0.0-20180917205041-7221087c3d28 // indirect
-	github.com/json-iterator/go v1.1.5 // indirect
-	github.com/kr/fs v0.1.0 // indirect
-	github.com/mitchellh/cli v1.0.0 // indirect
-	github.com/mitchellh/copystructure v1.0.0 // indirect
-	github.com/mitchellh/go-homedir v1.0.0 // indirect
-	github.com/mitchellh/go-testing-interface v1.0.0 // indirect
-	github.com/mitchellh/hashstructure v1.0.0 // indirect
-	github.com/mitchellh/mapstructure v1.0.0 // indirect
-	github.com/modern-go/concurrent v0.0.0-20180306012644-bacd9c7ef1dd // indirect
-	github.com/modern-go/reflect2 v1.0.1 // indirect
-	github.com/onsi/gomega v1.4.2 // indirect
-	github.com/opencontainers/go-digest v1.0.0-rc1 // indirect
-	github.com/pborman/uuid v1.2.0 // indirect
-	github.com/pkg/errors v0.8.0 // indirect
-	github.com/pkg/sftp v1.8.3 // indirect
-	github.com/prometheus/procfs v0.0.0-20180920065004-418d78d0b9a7 // indirect
-	github.com/spf13/afero v1.1.2 // indirect
-	github.com/stretchr/objx v0.1.1 // indirect
-	google.golang.org/grpc v1.15.0 // indirect
-	gopkg.in/gcfg.v1 v1.2.3 // indirect
-	gopkg.in/inf.v0 v0.9.1 // indirect
-	gopkg.in/ini.v1 v1.38.2 // indirect
-	gopkg.in/square/go-jose.v2 v2.1.8 // indirect
-	gopkg.in/warnings.v0 v0.1.2 // indirect
-	k8s.io/api v0.0.0-20180308224125-73d903622b73 // indirect; git tag "kubernetes-1.10.1"
-	k8s.io/apiextensions-apiserver v0.0.0-20180412193505-4347b330d0ff // indirect
-	k8s.io/apimachinery v0.0.0-20180228050457-302974c03f7e // git tag "kubernetes-1.10.1"
-	k8s.io/apiserver v0.0.0-20180412185015-06e4be4fafa2 // indirect
-	k8s.io/client-go v7.0.0+incompatible // indirect
-	k8s.io/kops v1.10.0
-	k8s.io/kube-openapi v0.0.0-20180731170545-e3762e86a74c // indirect
-	k8s.io/kubernetes v1.10.1 // indirect
-	k8s.io/utils v0.0.0-20180918230422-cd34563cd63c // indirect
+	github.com/hashicorp/terraform v0.12.14
+	k8s.io/apimachinery v0.0.0
+	k8s.io/kops v1.4.2-0.20191015153511-1a662bf87cab
 )

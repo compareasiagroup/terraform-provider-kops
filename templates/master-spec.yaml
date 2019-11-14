@@ -1,0 +1,18 @@
+apiVersion: kops.k8s.io/v1alpha2
+kind: InstanceGroup
+metadata:
+  creationTimestamp: "2019-11-07T21:35:55Z"
+  labels:
+    kops.k8s.io/cluster: ${cluster_name}
+  name: ${master_name}
+spec:
+  image: kope.io/k8s-1.15-debian-stretch-amd64-hvm-ebs-2019-09-26
+  machineType: t3.medium
+  maxSize: 1
+  minSize: 1
+  nodeLabels:
+    kops.k8s.io/instancegroup: ${master_name}
+  role: Master
+  rootVolumeSize: 100
+  subnets:
+  - ${master_subnet}
