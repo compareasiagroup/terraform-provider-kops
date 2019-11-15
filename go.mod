@@ -48,6 +48,10 @@ replace k8s.io/sample-apiserver => k8s.io/sample-apiserver v0.0.0-20190819143045
 
 replace k8s.io/kube-aggregator => k8s.io/kube-aggregator v0.0.0-20190819142756-13daafd3604f
 
+replace github.com/miekg/coredns => github.com/miekg/coredns v0.0.0-20161111164017-20e25559d5ea
+
+replace github.com/miekg/dns => github.com/miekg/dns v0.0.0-20160614162101-5d001d020961
+
 require (
 	github.com/hashicorp/terraform v0.12.14
 	k8s.io/apimachinery v0.0.0

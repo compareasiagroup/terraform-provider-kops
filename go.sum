@@ -440,6 +440,7 @@ github.com/mesos/mesos-go v0.0.9/go.mod h1:kPYCMQ9gsOXVAle1OsoY4I1+9kPu8GHkf88aV
 github.com/mholt/caddy v0.0.0-20180213163048-2de495001514/go.mod h1:Wb1PlT4DAYSqOEd03MsqkdkXnTxA8v9pKjdpxbqM1kY=
 github.com/miekg/coredns v0.0.0-20161111164017-20e25559d5ea h1:ClxQqQsf07a0/3NsMYizr/dMxQoeSpNWDge0v3iHEcU=
 github.com/miekg/coredns v0.0.0-20161111164017-20e25559d5ea/go.mod h1:ulj34RFTnjlzXt4MMq5AcKBIiXNiru0D2fe3enowwU4=
+github.com/miekg/dns v0.0.0-20160614162101-5d001d020961 h1:vX2vkMipgQZ8gfmAsFeZdcgmhHoB7jMo6chAtajG3AI=
 github.com/miekg/dns v0.0.0-20160614162101-5d001d020961/go.mod h1:W1PPwlIAgtquWBMBEV9nkV9Cazfe8ScdGz/Lj7v3Nrg=
 github.com/miekg/dns v1.0.8 h1:Zi8HNpze3NeRWH1PQV6O71YcvJRQ6j0lORO6DAEmAAI=
 github.com/miekg/dns v1.0.8/go.mod h1:W1PPwlIAgtquWBMBEV9nkV9Cazfe8ScdGz/Lj7v3Nrg=
