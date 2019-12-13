@@ -6,7 +6,7 @@ metadata:
     kops.k8s.io/cluster: ${cluster_name}
   name: ${master_name}
 spec:
-  image: kope.io/k8s-1.15-debian-stretch-amd64-hvm-ebs-2019-09-26
+  image: ${ami}
   machineType: t3.medium
   maxSize: 1
   minSize: 1

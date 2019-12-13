@@ -1,1 +1,10 @@
 terraform-provider-kops
+.terraform
+terraform.tfvars
+*.tfstate
+*.tfstate.backup
+tfstate-tmp.json
+.terragrunt-cache
+.ssh
+.history
+.DS_Store

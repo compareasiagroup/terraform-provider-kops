@@ -5,14 +5,14 @@ metadata:
   generation: 1
   labels:
     kops.k8s.io/cluster: ${cluster_name}
-  name: nodes-spot
+  name: ${node_group_name}
 spec:
   cloudLabels:
     k8s.io/cluster-autoscaler/enabled: "true"
     k8s.io/cluster-autoscaler/${cluster_name}: "true"
     kubernetes.io/cluster/${cluster_name}: owned
     role: compute
-  image: kope.io/k8s-1.15-debian-stretch-amd64-hvm-ebs-2019-09-26
+  image: ${ami}
   machineType: m5.xlarge
   maxSize: ${max_size}
   minSize: ${min_size}

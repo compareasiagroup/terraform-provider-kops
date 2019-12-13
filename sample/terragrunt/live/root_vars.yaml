@@ -1,0 +1,9 @@
+root_dns:  cag.systems
+
+foo_dns:   foo.cag.systems
+bar_dns:   bar.cag.systems
+
+# AWS Account Aliases
+accounts:
+  account-1:   "123456789012"
+  account-2:   "098765432109"

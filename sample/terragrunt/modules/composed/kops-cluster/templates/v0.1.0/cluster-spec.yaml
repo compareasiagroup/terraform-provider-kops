@@ -5,6 +5,37 @@ metadata:
   name: ${cluster_name}
 spec:
   additionalPolicies:
+    master: |
+      [
+        {
+          "Effect": "Allow",
+          "Action": "route53:GetChange",
+          "Resource": "arn:aws:route53:::change/*"
+        },
+        {
+          "Effect": "Allow",
+          "Action": ["route53:ChangeResourceRecordSets"],
+          "Resource": ${jsonencode(extdns_zones)}
+        },
+        {
+          "Effect": "Allow",
+          "Action": [
+            "route53:ListHostedZones",
+            "route53:ListResourceRecordSets",
+            "route53:ListHostedZonesByName"
+          ],
+          "Resource": ["*"]
+        }
+        %{~ if length(master_roles) > 0 ~}
+        ,{
+          "Effect": "Allow",
+          "Action": [
+            "sts:AssumeRole"
+          ],
+          "Resource": ${jsonencode(master_roles)}
+        }
+        %{~ endif ~}
+      ]
     node: |
       [
         {
@@ -57,25 +88,6 @@ spec:
             "elasticloadbalancing:SetLoadBalancerPoliciesOfListener"
           ],
           "Resource": ["*"]
-        },
-        {
-          "Effect": "Allow",
-          "Action": "route53:GetChange",
-          "Resource": "arn:aws:route53:::change/*"
-        },
-        {
-          "Effect": "Allow",
-          "Action": ["route53:ChangeResourceRecordSets"],
-          "Resource": ["arn:aws:route53:::hostedzone/*"]
-        },
-        {
-          "Effect": "Allow",
-          "Action": [
-            "route53:ListHostedZones",
-            "route53:ListResourceRecordSets",
-            "route53:ListHostedZonesByName"
-          ],
-          "Resource": ["*"]
         }
       ]
   api:
@@ -85,7 +97,7 @@ spec:
     rbac: {}
   channel: stable
   cloudProvider: aws
-  configBase: s3://k8-test-priv-cag-systems-kstate/${cluster_name}
+  configBase: ${state_store}/${cluster_name}
   etcdClusters:
   - etcdMembers:
     - instanceGroup: master-a
@@ -147,7 +159,7 @@ spec:
   %{~ for r in allowed_cidr_blocks ~}
   - ${r}
   %{~ endfor ~}
-  kubernetesVersion: 1.15.5
+  kubernetesVersion: ${kubernetes_version}
   masterInternalName: api.internal.${cluster_name}
   masterPublicName: api.${cluster_name}
   networkCIDR: ${vpc.cidr_block}
