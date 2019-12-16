@@ -3,7 +3,7 @@ provider "aws" {
 }
 
 provider "kops" {
-    state_store = var.state_store
+  state_store = var.state_store
 }
 
 
