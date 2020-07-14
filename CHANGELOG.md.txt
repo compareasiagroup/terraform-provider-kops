@@ -1,0 +1,9 @@
+0.2.0 Changelog:
+
+- remove support for legacy key pairs
+  https://github.com/kubernetes/kops/commit/8a6d29cd40d2d5cbaae899ceb5906e5e556f1abd#diff-a01a3d725cc52dca6bf43954e1ad1fd2
+
+- Kube 1.18 clients require go context - https://github.com/kubernetes/kops/pull/8879/files
+
+Note kops 1.18.0-beta.2 supports update strategies for instance groups
+https://github.com/kubernetes/kops/blob/v1.18.0-beta.2/docs/operations/rolling-update.md#configurable-rolling-update-strategies
