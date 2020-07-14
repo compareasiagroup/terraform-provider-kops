@@ -8,14 +8,14 @@ All cluster ops are still done through kops binary outside of terraform workflow
 
 ## Usage
 
-- Download the compiled binary for Terraform 0.12 and Kops 1.15 from [GitHub releases](https://github.com/compareasiagroup/terraform-provider-kops/releases/tag/0.1.0)
+- Download the compiled binary for Terraform 0.12 and Kops 1.18 from [GitHub releases](https://github.com/compareasiagroup/terraform-provider-kops/releases/tag/0.2.0)
 
 - Unzip/untar the archive
 
 - Move it into `$HOME/.terraform.d/plugins`:
 
 ```sh
-$ curl -L https://github.com/compareasiagroup/terraform-provider-kops/releases/download/0.1.0/terraform-provider-kops_0.1.0_darwin_amd64.tgz | tar -xzf -
+$ curl -L https://github.com/compareasiagroup/terraform-provider-kops/releases/download/0.2.0/terraform-provider-kops_0.2.0_darwin_amd64.tgz | tar -xzf -
 
 $ mkdir -p $HOME/.terraform.d/plugins
 $ mv terraform-provider-kops $HOME/.terraform.d/plugins/terraform-provider-kops

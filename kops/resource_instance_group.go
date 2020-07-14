@@ -1,6 +1,7 @@
 package kops
 
 import (
+	"context"
 	"encoding/json"
 	"fmt"
 	"strings"
@@ -36,11 +37,12 @@ func parseInstanceGroupID(id string) instanceGroupID {
 func getInstanceGroup(d *schema.ResourceData, m interface{}) (*kops.InstanceGroup, error) {
 	groupID := parseInstanceGroupID(d.Id())
 	clientset := m.(*vfsclientset.VFSClientset)
-	cluster, err := clientset.GetCluster(groupID.clusterName)
+	ctx := context.TODO()
+	cluster, err := clientset.GetCluster(ctx, groupID.clusterName)
 	if err != nil {
 		return nil, err
 	}
-	return clientset.InstanceGroupsFor(cluster).Get(groupID.instanceGroupName, v1.GetOptions{})
+	return clientset.InstanceGroupsFor(cluster).Get(ctx, groupID.instanceGroupName, v1.GetOptions{})
 }
 
 func resourceInstanceGroup() *schema.Resource {
@@ -72,7 +74,8 @@ func resourceInstanceGroup() *schema.Resource {
 func resourceInstanceGroupCreate(d *schema.ResourceData, m interface{}) error {
 	clusterName := d.Get("cluster_name").(string)
 	clientset := m.(*vfsclientset.VFSClientset)
-	cluster, err := clientset.GetCluster(clusterName)
+	ctx := context.TODO()
+	cluster, err := clientset.GetCluster(ctx, clusterName)
 	if err != nil {
 		return err
 	}
@@ -83,7 +86,7 @@ func resourceInstanceGroupCreate(d *schema.ResourceData, m interface{}) error {
 		return err
 	}
 
-	instanceGroup, err := clientset.InstanceGroupsFor(cluster).Create(ig)
+	instanceGroup, err := clientset.InstanceGroupsFor(cluster).Create(ctx, ig, v1.CreateOptions{})
 	if err != nil {
 		return err
 	}
@@ -98,7 +101,7 @@ func resourceInstanceGroupCreate(d *schema.ResourceData, m interface{}) error {
 	// 	return err
 	// }
 
-	_, err = clientset.InstanceGroupsFor(cluster).Update(instanceGroup)
+	_, err = clientset.InstanceGroupsFor(cluster).Update(ctx, instanceGroup, v1.UpdateOptions{})
 	if err != nil {
 		return err
 	}
@@ -123,7 +126,8 @@ func resourceInstanceGroupUpdate(d *schema.ResourceData, m interface{}) error {
 
 	clusterName := d.Get("cluster_name").(string)
 	clientset := m.(*vfsclientset.VFSClientset)
-	cluster, err := clientset.GetCluster(clusterName)
+	ctx := context.TODO()
+	cluster, err := clientset.GetCluster(ctx, clusterName)
 	if err != nil {
 		return err
 	}
@@ -134,7 +138,7 @@ func resourceInstanceGroupUpdate(d *schema.ResourceData, m interface{}) error {
 		return err
 	}
 
-	_, err = clientset.InstanceGroupsFor(cluster).Update(ig)
+	_, err = clientset.InstanceGroupsFor(cluster).Update(ctx, ig, v1.UpdateOptions{})
 	if err != nil {
 		return err
 	}
@@ -145,11 +149,12 @@ func resourceInstanceGroupUpdate(d *schema.ResourceData, m interface{}) error {
 func resourceInstanceGroupDelete(d *schema.ResourceData, m interface{}) error {
 	groupID := parseInstanceGroupID(d.Id())
 	clientset := m.(*vfsclientset.VFSClientset)
-	cluster, err := clientset.GetCluster(groupID.clusterName)
+	ctx := context.TODO()
+	cluster, err := clientset.GetCluster(ctx, groupID.clusterName)
 	if err != nil {
 		return err
 	}
-	return clientset.InstanceGroupsFor(cluster).Delete(groupID.instanceGroupName, &v1.DeleteOptions{})
+	return clientset.InstanceGroupsFor(cluster).Delete(ctx, groupID.instanceGroupName, v1.DeleteOptions{})
 }
 
 func resourceInstanceGroupExists(d *schema.ResourceData, m interface{}) (bool, error) {

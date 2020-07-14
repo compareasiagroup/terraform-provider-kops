@@ -1,6 +1,7 @@
 package kops
 
 import (
+	"context"
 	"encoding/json"
 
 	"github.com/hashicorp/terraform/helper/schema"
@@ -33,6 +34,7 @@ func resourceCluster() *schema.Resource {
 
 func resourceClusterCreate(d *schema.ResourceData, m interface{}) error {
 	clientset := m.(*vfsclientset.VFSClientset)
+	ctx := context.TODO()
 	cluster := &kops.Cluster{}
 	content := d.Get("content").(string)
 	err := json.Unmarshal([]byte(content), cluster)
@@ -40,12 +42,12 @@ func resourceClusterCreate(d *schema.ResourceData, m interface{}) error {
 		return err
 	}
 
-	cluster, err = clientset.CreateCluster(cluster)
+	cluster, err = clientset.CreateCluster(ctx, cluster)
 	if err != nil {
 		return err
 	}
 
-	cluster, err = clientset.GetCluster(cluster.Name)
+	cluster, err = clientset.GetCluster(ctx, cluster.Name)
 	if err != nil {
 		return err
 	}
@@ -55,7 +57,7 @@ func resourceClusterCreate(d *schema.ResourceData, m interface{}) error {
 	// if err != nil {
 	// 	return err
 	// }
-	_, err = clientset.UpdateCluster(cluster, nil)
+	_, err = clientset.UpdateCluster(ctx, cluster, nil)
 	if err != nil {
 		return err
 	}
@@ -76,11 +78,12 @@ func resourceClusterUpdate(d *schema.ResourceData, m interface{}) error {
 	}
 
 	clientset := m.(*vfsclientset.VFSClientset)
+	ctx := context.TODO()
 	cluster := &kops.Cluster{}
 	content := d.Get("content").(string)
 	err := json.Unmarshal([]byte(content), cluster)
 
-	_, err = clientset.UpdateCluster(cluster, nil)
+	_, err = clientset.UpdateCluster(ctx, cluster, nil)
 
 	if err != nil {
 		return err
@@ -96,7 +99,8 @@ func resourceClusterDelete(d *schema.ResourceData, m interface{}) error {
 	}
 
 	clientset := m.(*vfsclientset.VFSClientset)
-	return clientset.DeleteCluster(cluster)
+	ctx := context.TODO()
+	return clientset.DeleteCluster(ctx, cluster)
 }
 
 func resourceClusterExists(d *schema.ResourceData, m interface{}) (bool, error) {
@@ -113,13 +117,15 @@ func resourceClusterExists(d *schema.ResourceData, m interface{}) (bool, error) 
 
 func getCluster(d *schema.ResourceData, m interface{}) (*kops.Cluster, error) {
 	clientset := m.(*vfsclientset.VFSClientset)
-	return clientset.GetCluster(d.Id())
+	ctx := context.TODO()
+	return clientset.GetCluster(ctx, d.Id())
 }
 
 func setClusterResourceData(d *schema.ResourceData, m interface{}) error {
 	// get cluster
 	clientset := m.(*vfsclientset.VFSClientset)
-	cluster, err := clientset.GetCluster(d.Id())
+	ctx := context.TODO()
+	cluster, err := clientset.GetCluster(ctx, d.Id())
 	if err != nil {
 		return err
 	}

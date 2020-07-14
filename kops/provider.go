@@ -51,5 +51,5 @@ func providerConfigure(d *schema.ResourceData) (interface{}, error) {
 		return nil, field.Invalid(field.NewPath("State Store"), registryPath, invalidStateError)
 	}
 
-	return vfsclientset.NewVFSClientset(basePath, true), nil
+	return vfsclientset.NewVFSClientset(basePath), nil
 }
